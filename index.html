@@ -206,8 +206,14 @@ function drawClock() {
 
     let h = now.getHours(); let m = now.getMinutes().toString().padStart(2, "0");
     let ampm = h >= 12 ? "오후" : "오전"; h = h % 12 || 12;
-    ctx.fillStyle = "#a67c52"; ctx.font = "bold 32px Arial"; ctx.textAlign = "center";
-    ctx.fillText(`${ampm} ${h}:${m}`, 150, 160);
+    
+    // Main Time
+    ctx.fillStyle = "#a67c52"; ctx.font = "bold 36px Arial"; ctx.textAlign = "center";
+    ctx.fillText(`${h}:${m}`, 150, 150);
+    
+    // AM/PM Below and Smaller
+    ctx.font = "16px Arial";
+    ctx.fillText(ampm, 150, 175);
 
     document.getElementById("periodLabel").textContent = label;
     document.getElementById("periodLabel").style.color = color;
