@@ -170,6 +170,9 @@ const canvas=document.getElementById("clock");
 const ctx=canvas.getContext("2d");
 function toMin(t){let[h,m]=t.split(":"); return h*60+parseInt(m);}
 
+let pulseGlow = 0;
+let pulseDir = 1;
+
 function drawClock() {
     let now = new Date();
     let mins = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
@@ -199,9 +202,17 @@ function drawClock() {
 
     if (total > 0) {
         let percent = Math.max(0, Math.min(1, remain / total));
+        
+        pulseGlow += 0.4 * pulseDir;
+        if(pulseGlow > 16 || pulseGlow < 0) pulseDir *= -1;
+
+        ctx.save();
         ctx.beginPath();
         ctx.arc(150, 150, 138, -Math.PI / 2, -Math.PI / 2 + (percent * 2 * Math.PI), false);
-        ctx.lineWidth = 12; ctx.strokeStyle = color; ctx.lineCap = "round"; ctx.stroke();
+        ctx.lineWidth = 12; ctx.strokeStyle = color; ctx.lineCap = "round";
+        ctx.shadowBlur = pulseGlow; ctx.shadowColor = color;
+        ctx.stroke();
+        ctx.restore();
     }
 
     let h = now.getHours(); let m = now.getMinutes().toString().padStart(2, "0");
@@ -225,7 +236,7 @@ function drawClock() {
         }
     });
 }
-setInterval(drawClock, 1000);
+setInterval(drawClock, 50);
 
 function startEmojiRain() {
   setInterval(() => {
