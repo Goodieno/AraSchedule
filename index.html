@@ -201,21 +201,25 @@ function drawClock() {
         remain = toMin(active.end) - mins;
     }
 
+// ... (inside the drawClock function) ...
+
     if (total > 0) {
         let percent = Math.max(0, Math.min(1, remain / total));
         
-        pulseGlow += 0.5 * pulseDir; // Slightly faster pulse
-        if(pulseGlow > 20 || pulseGlow < 0) pulseDir *= -1;
+        pulseGlow += 0.3 * pulseDir; 
+        if(pulseGlow > 10 || pulseGlow < 0) pulseDir *= -1;
 
         ctx.save();
         ctx.beginPath();
         ctx.arc(150, 150, 138, -Math.PI / 2, -Math.PI / 2 + (percent * 2 * Math.PI), false);
-        ctx.lineWidth = 18; ctx.strokeStyle = color; ctx.lineCap = "round"; // Thicker line
-        ctx.shadowBlur = pulseGlow + 5; ctx.shadowColor = color; // Stronger glow
+        ctx.lineWidth = 8; // Much thinner and cleaner
+        ctx.strokeStyle = color; 
+        ctx.lineCap = "round"; 
+        ctx.shadowBlur = pulseGlow + 2; 
+        ctx.shadowColor = color; 
         ctx.stroke();
         ctx.restore();
     }
-
     let h = now.getHours(); let m = now.getMinutes().toString().padStart(2, "0");
     let ampm = h >= 12 ? "오후" : "오전"; h = h % 12 || 12;
     
