@@ -195,7 +195,8 @@ function drawClock() {
     let active = blocks.find(b => mins >= toMin(b.start) && mins < toMin(b.end));
     if (active) {
         label = active.label;
-        color = active.type === "class" ? "#e07a5f" : (active.type === "prep" ? "#8e9775" : "#d4a373");
+        // Updated colors for better visibility: Darker Orange for class, Deep Olive for prep, Golden Brown for breaks/lunch
+        color = active.type === "class" ? "#d35400" : (active.type === "prep" ? "#556b2f" : "#b07d05");
         total = toMin(active.end) - toMin(active.start);
         remain = toMin(active.end) - mins;
     }
@@ -203,14 +204,14 @@ function drawClock() {
     if (total > 0) {
         let percent = Math.max(0, Math.min(1, remain / total));
         
-        pulseGlow += 0.4 * pulseDir;
-        if(pulseGlow > 16 || pulseGlow < 0) pulseDir *= -1;
+        pulseGlow += 0.5 * pulseDir; // Slightly faster pulse
+        if(pulseGlow > 20 || pulseGlow < 0) pulseDir *= -1;
 
         ctx.save();
         ctx.beginPath();
         ctx.arc(150, 150, 138, -Math.PI / 2, -Math.PI / 2 + (percent * 2 * Math.PI), false);
-        ctx.lineWidth = 12; ctx.strokeStyle = color; ctx.lineCap = "round";
-        ctx.shadowBlur = pulseGlow; ctx.shadowColor = color;
+        ctx.lineWidth = 18; ctx.strokeStyle = color; ctx.lineCap = "round"; // Thicker line
+        ctx.shadowBlur = pulseGlow + 5; ctx.shadowColor = color; // Stronger glow
         ctx.stroke();
         ctx.restore();
     }
